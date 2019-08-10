@@ -1,0 +1,26 @@
+{
+  "name": "http-code",
+  "version": "1.0.0",
+  "description": "API de retorno de códigos HTTP",
+  "main": "out/index.js",
+  "scripts": {
+    "start": "tsc && node out/index.js",
+    "dev": "nodemon --watch \"src/\" --exec \"ts-node src/index.ts\" -e",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniel Mendes",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "typescript": "^3.5.3"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express",
+    "http"
+  ]
+}
