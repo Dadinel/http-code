@@ -1,6 +1,6 @@
-import * as express from "express";
+import { Request, Response }from "express";
 
-export function getRandomCode(req: express.Request, resp: express.Response) {
+export function getRandomCode(req: Request, resp: Response): void {
     let code: number = getRandomNumber(2,6);
     resp.status(code).send();
 }
