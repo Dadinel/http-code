@@ -79,7 +79,11 @@ export class JsonQuery {
     }
 
     public async purgeJson(): Promise<void> {
-        this._database.run( "DELETE FROM JSONAPI WHERE ADDED < " + this.getTimeNow(), (result: RunResult, err: Error) => {
+        let yesterday: Date = new Date();
+
+        yesterday.setDate( yesterday.getDate() - 1);
+
+        this._database.run( "DELETE FROM JSONAPI WHERE ADDED < " + yesterday.getTime().toString(), (result: RunResult, err: Error) => {
             if (err) {
                 console.error(err);
                 throw err;
