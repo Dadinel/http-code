@@ -9,19 +9,12 @@ export class JsonSQLite {
         let exist: any = await JsonSQLite.existJsonByID(req, resp);
 
         if (exist) {
-            let json: any = await _jsonQuery.getJson(req.params["id"]);
-            resp.status(200).send(json);
+            resp.status(200).send( await _jsonQuery.getJson(req.params["id"]) );
         }
     }
 
     public static async addJsonSQLite(req: Request, resp: Response): Promise<void> {
-        let id: string = await _jsonQuery.addJson(req.body);
-
-        let json: any = req.body;
-
-        json["id"] = id;
-
-        resp.status(201).send(json);
+        resp.status(201).send( await _jsonQuery.addJson(req.body) );
     }
     
     public static async deleteJsonSQLite(req: Request, resp: Response): Promise<void> {
@@ -36,14 +29,8 @@ export class JsonSQLite {
     public static async updateJsonSQLite(req: Request, resp: Response): Promise<void> {
         let exist: boolean = await JsonSQLite.existJsonByID(req, resp);
 
-        if (exist) {
-            _jsonQuery.updateJson(req.params["id"], req.body);
-
-            let json: any = req.body;
-
-            json["id"] = req.params["id"];
-            
-            resp.status(200).send(json);
+        if (exist) {           
+            resp.status(200).send( await _jsonQuery.updateJson(req.params["id"], req.body) );
         }
     }
 

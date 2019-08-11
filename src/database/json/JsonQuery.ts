@@ -21,7 +21,7 @@ export class JsonQuery {
                 let jsonAPI: any = this.verifyQuery([p01, p02, p03]);
 
                 if (jsonAPI) {
-                    resolve(jsonAPI);
+                    resolve(jsonAPI["JSON"]);
                 } else {
                     reject(jsonAPI);
                 }
@@ -40,11 +40,9 @@ export class JsonQuery {
     }
     
     public async addJson(json: string | any): Promise<string> {
-        if ( typeof(json) == "object" ) {
-            json = JSON.stringify(json);
-        }
-    
         const uuid: string = v4();
+
+        json = this.getStringJsonWithID(uuid, json);
     
         this._database.run( "INSERT INTO JSONAPI VALUES ('" + uuid + "', '" + json + "', " + this.getTimeNow() + ");", (result: RunResult, err: Error) => {
             if (err) {
@@ -53,13 +51,11 @@ export class JsonQuery {
             }
         });
     
-        return uuid;
+        return json;
     }
     
-    public async updateJson(uuid: string, json: string | any): Promise<void> {
-        if ( typeof(json) == "object" ) {
-            json = JSON.stringify(json);
-        }
+    public async updateJson(uuid: string, json: string | any): Promise<string> {
+        json = this.getStringJsonWithID(uuid, json);
     
         this._database.run( "UPDATE JSONAPI SET JSON = '" + json + "', ADDED = " + this.getTimeNow() + " WHERE ID = '" + uuid + "'", (result: RunResult, err: Error) => {
             if (err) {
@@ -67,6 +63,8 @@ export class JsonQuery {
                 throw err;
             }
         });
+
+        return json;
     }
     
     public async deleteJson(uuid: string): Promise<void> {
@@ -109,5 +107,22 @@ export class JsonQuery {
         }
 
         return false;
+    }
+
+    private getStringJsonWithID(id: string, json: any): any {
+        if ( typeof(json) == "string" ) {
+            try {
+                json = JSON.parse(json);
+            } catch {}
+        }
+
+        if ( typeof(json) == "object" ) {
+            json["id"] = id;
+            json = JSON.stringify(json);
+        } else {
+            json = json.toString();
+        }
+
+        return json;
     }
 }
