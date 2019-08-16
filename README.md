@@ -1,4 +1,4 @@
-# http-code
+# http-code-body-tester
 
 NodeJS/Heroku - API que retorna um código HTTP para teste, também sendo possível enviar e receber um body no endpoint
 
